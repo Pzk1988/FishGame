@@ -1,0 +1,5 @@
+C:\Users\Przemek\Documents\Visual Studio 2017\Projects\FishGame\Studia.HTML5.Przyklad3.Lib\bin\Debug\Studia.HTML5.Przyklad3.Lib.dll
+C:\Users\Przemek\Documents\Visual Studio 2017\Projects\FishGame\Studia.HTML5.Przyklad3.Lib\bin\Debug\Studia.HTML5.Przyklad3.Lib.pdb
+C:\Users\Przemek\Documents\Visual Studio 2017\Projects\FishGame\Studia.HTML5.Przyklad3.Lib\obj\Debug\Studia.HTML5.Przyklad3.Lib.csprojResolveAssemblyReference.cache
+C:\Users\Przemek\Documents\Visual Studio 2017\Projects\FishGame\Studia.HTML5.Przyklad3.Lib\obj\Debug\Studia.HTML5.Przyklad3.Lib.dll
+C:\Users\Przemek\Documents\Visual Studio 2017\Projects\FishGame\Studia.HTML5.Przyklad3.Lib\obj\Debug\Studia.HTML5.Przyklad3.Lib.pdb
