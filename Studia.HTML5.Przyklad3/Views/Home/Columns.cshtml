@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Columns";
+    var People = Studia.HTML5.Przyklad3.Lib.Data.People;
+}
+<h2>Table view</h2>
+<div class="row">
+    @foreach (var person in People)
+    {
+        <div class="col-md-6">
+            <div class="well well">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <img src="@Url.Content("~/"+@person.Photo)"
+                             alt="Alternate Text" class="img-thumbnail" />
+                    </div>
+
+                    <div class="col-sm-5">
+                        <h2 class="text-center">@person.Name @person.Surname</h2>
+                        <h4 class="text-center text-primary">@person.Job</h4>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="badge">@person.Age</div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    }
+
+</div>

@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Wariant bazowy";
+    var People = Studia.HTML5.Przyklad3.Lib.Data.People;
+}
+
+<div class="row">
+    <ul>
+        @foreach (var person in People)
+        {
+            <li>
+                <img src="@Url.Content("~/"+@person.Photo)" alt="Alternate Text" />
+                <div>
+                    @person.Name
+                </div>
+                <div>
+                    @person.Surname
+                </div>
+                <div>
+                    @person.Job
+                </div>
+                <div>
+                    @person.Age
+                </div>
+            </li>}
+    </ul>
+</div>

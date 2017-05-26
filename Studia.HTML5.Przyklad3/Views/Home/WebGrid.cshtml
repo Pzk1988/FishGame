@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+@{
+    ViewBag.Title = "WebGrid Example";
+    var People = Studia.HTML5.Przyklad3.Lib.Data.People;
+    var grid = new WebGrid(source: People);
+}
+
+<h2>WebGrid</h2>
+
+@grid.GetHtml(
+    columns: grid.Columns(
+        grid.Column(columnName: "Surname", header: "Surname"),
+        grid.Column(columnName: "Name", header: "Name"),
+        grid.Column(columnName: "Job", header: "Job"),
+        grid.Column(columnName: "Photo",
+        format: @<img src="@Url.Content("~/"+item.Photo)" />)
+        )
+    );

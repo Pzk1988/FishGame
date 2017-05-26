@@ -1,0 +1,52 @@
+﻿Gra ze skryptu game1 nie jest zbyt ciekawa, chociaż ma już mniej więcej
+połowę kodu docelowej gry :) Aby w grę dało się grać:
+
+1. Tworzymy tablicę obiektów przechowujących ryby do zjadania. 
+Przy pomocy pętli for wypełnić ją obiektami reprezentującymi ryby.
+Tablica może być na początku pusta, ponieważ w JS rozmiar tablicy
+nie jest z góry ustalony.
+Można przyjąć, że obiekt ryby ma następujące właściwości: x, y, speed, image:
+fishes[i] = {
+        x: -30,
+        y: Math.random() * canvas.height,
+        speed: 64 + Math.random() * 32,
+        image:fishImage
+    };
+
+2. Wyświetlamy ryby. Należy dodać odpowiednią pętlę w funkcji render().
+Rozmiar ryb do zjadania można przyjąć taki sam jak "naszej" ryby.
+
+3. Implementujemy poruszanie się ryb. W pętli dla każdej z ryb może
+ono wyglądać tak:
+fishes[i].x += fishes[i].speed * modifier;
+
+4. Należy pamiętać o tym, że kiedy ryba do jedzenia wypłynie poza
+ekran, należy ją "wrócić" na początek. Trzeba sprawdzić warunek:
+if (fishes[i].x > canvas.width + fishes[i].size) { 
+	// kod przywracający rybę na początek
+	// najlepiej wylosować od nowa wszystkie parametry
+}
+
+NARESZCIE będzie się można zabrać za zjadanie ryb :)
+
+5. Dla obiektów z tablicy fishes dodajemy właściwość "caught".
+Przy tworzeniu ryby ma wartość false, a po jej zjedzeniu "true".
+
+6. Dodajemy kod do obsługi kolizji naszej ryby z rybą jadalną.
+Będą to 4 warunki sprawdzające:
+fishes[i].x <= hero.x <= fishes[i].x + 40
+fishes[i].y <= hero.y <= fishes[i].y + 30
+Przy zjedzeniu ryby ustawiamy jej właściwość caught na "true"
+
+7. W kodzie renderującym ryby dodajemy warunek, że ryba jest
+wyświetlana tylko wtedy, kiedy nie jest zjedzona.
+
+8. W funkcji reset sprawdzamy w pętli, czy ryba nie jest zjedzona.
+Jeśli tak, to w jej miejsce losujemy nową rybę.
+
+Na tym etapie da się już grać w grę. Nie jest jednak zbytnio
+sprawiedliwa, ponieważ tylko nasza ryba może jeść inne ryby.
+W klasycznej wersji gry przy kolizjach sprawdza się rozmiar ryb
+a nasza ryba rośnie wraz ze zdobywaniem punktów.
+
+9. Wprowadzamy rozmiar ryby
