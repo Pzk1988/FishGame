@@ -29,10 +29,29 @@ fishImage.onload = function () {
 };
 fishImage.src = "./Images/green-fish.png";
 
+var grayReady = false;
+var grayImage = new Image();
+grayImage.onload = function () {
+    grayReady = true;
+};
+grayImage.src = "./Images/gray-fish.png";
+
+
+var crabReady = false;
+var crabImage = new Image();
+crabImage.onload = function () {
+    crabReady = true;
+};
+crabImage.src = "./Images/crab.png";
+
+
 var points = 0;
 var level = 1;
 var lives = 3;
 var fishAmount = 10;
+var levelChange = 10;
+var monsterAmount = 0;
+var time;
 
 // Obiekty
 var hero = {
@@ -44,7 +63,7 @@ var hero = {
 var fishes = [];
 
 var creatFishes = function () {
-
+    fishes = [];
     for (var i = 0; i < fishAmount; i++)
     {
         fishes.push(
@@ -56,7 +75,27 @@ var creatFishes = function () {
                 x_dir: Math.random() >= 0.5,
                 y_dir: Math.random() >= 0.5,
                 speed: Math.floor((Math.random() * 256) + 1),
-                catch: false
+                catch: false,
+                monsterImage: Math.random() >= 0.5,
+                image: ((Math.random() >= 0.5) == true ? fishImage : grayImage),
+                friendly: true,
+            }
+        );
+    }
+    for (var i = 0; i < monsterAmount; i++) {
+        fishes.push(
+            {
+                x: Math.floor((Math.random() * (700 - 40)) + 1),
+                y: Math.floor((Math.random() * (480 - 30)) + 1),
+                width: 40,
+                height: 30,
+                x_dir: Math.random() >= 0.5,
+                y_dir: Math.random() >= 0.5,
+                speed: Math.floor((Math.random() * 256) + 1),
+                catch: false,
+                monsterImage: Math.random() >= 0.5,
+                image: crabImage,
+                friendly: false,
             }
         );
     }
@@ -86,21 +125,35 @@ var reset = function ()
 // Logika ruchu
 var update = function (modifier) {
     if (38 in keysDown) { // Góra
-        hero.y -= hero.speed * modifier;
+        if (hero.y - (hero.speed * modifier) > 0)
+        {
+            hero.y -= hero.speed * modifier;
+        }
     }
-    if (40 in keysDown) { // Dół
-        hero.y += hero.speed * modifier;
+    if (40 in keysDown)
+    { 
+        if (hero.y + (hero.speed * modifier) < 450)
+        {
+            hero.y += hero.speed * modifier;
+        }
     }
-    if (37 in keysDown) { // Lewo
-        hero.x -= hero.speed * modifier;
+    if (37 in keysDown)
+    { 
+        if (hero.x - (hero.speed * modifier) > 0)
+        {
+            hero.x -= hero.speed * modifier;
+        }
     }
-    if (39 in keysDown) { // Prawo
-        hero.x += hero.speed * modifier;
+    if (39 in keysDown)
+    { 
+        if (hero.x + (hero.speed * modifier) < 660)
+        {
+            hero.x += hero.speed * modifier;
+        }
     }
+    
 
-    level = Math.ceil(points) / 50;
-
-    for (var i = 0; i < fishAmount; i++)
+    for (var i = 0; i < fishAmount + monsterAmount; i++)
     {
         if (fishes[i].x_dir == true)
         {
@@ -121,20 +174,37 @@ var update = function (modifier) {
             }
         }
     }
+    reset();
+};
 
-
-    for (var i = 0; i < fishAmount; i++)
-    {
-        if (Math.abs(fishes[i].y - hero.y) < 30 && Math.abs(fishes[i].x - hero.x) < 40 && fishes[i].catch == false)
-        {
-            fishes[i].catch = true;
-            hero.width *= 1.2;
-            hero.height *= 1.2;
-            points++;
+var detectColision = function () {
+    if (lives != 0) {
+        for (var i = 0; i < fishAmount + monsterAmount; i++) {
+            if (Math.abs(fishes[i].y - hero.y) < 30 && Math.abs(fishes[i].x - hero.x) < 40 && fishes[i].catch == false) {
+                if (fishes[i].friendly == true) {
+                    fishes[i].catch = true;
+                    points++;
+                    if (points == levelChange) {
+                        level++;
+                        monsterAmount++;
+                        fishAmount--;
+                        levelChange += fishAmount;
+                        creatFishes();
+                    }
+                }
+                else {
+                    if (lives == 1) {
+                        lives--;
+                    }
+                    else {
+                        lives--;
+                        hero.x = canvas.width / 2;
+                        hero.y = canvas.height / 2;
+                    }
+                }
+            }
         }
     }
-
-    reset();
 };
 
 // Wyświetlanie
@@ -148,11 +218,11 @@ var render = function () {
     }
 
     if (fishReady) {
-        for (var i = 0; i < fishAmount; i++)
+        for (var i = 0; i < fishAmount + monsterAmount; i++)
         {
             if (fishes[i].catch == false)
             {
-                ctx.drawImage(fishImage, fishes[i].x, fishes[i].y, fishes[i].width, fishes[i].height);
+                ctx.drawImage(fishes[i].image, fishes[i].x, fishes[i].y, fishes[i].width, fishes[i].height);
             }
         }
     }
@@ -165,12 +235,28 @@ var render = function () {
     ctx.fillText("Lives: " + lives + ", Level: " + level + ", Points: " + points, 32, 32);
 };
 
+var gameOver = function () {
+
+    if (lives == 0)
+    {
+        ctx.font = "30px Comic Sans MS";
+        ctx.fillStyle = "red";
+        ctx.textAlign = "center";
+        ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2); 
+    }
+};
+
 var main = function () {
     var now = Date.now();
     var delta = now - then;
 
     update(delta / 1000);
+
+    detectColision();
+
     render();
+
+    gameOver();
 
     then = now;
 };
